@@ -8,7 +8,7 @@ export async function GET(req, res){
         const id = parseInt(searchParams.get('id'))
         const prisma = new PrismaClient()
         const result = await prisma.news_list.findMany({
-            where: {categories: {id}}
+            where: {categories: {id}},
         })
         return NextResponse.json({status: "success", data: result})
     } catch (error) {
