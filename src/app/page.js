@@ -6,13 +6,13 @@ import PlainLayout from "@/Components/master/PlainLayout";
 async function getData() {
   try {
     const slider = await (
-      await fetch(process.env.BASE_URL + "/api/news/news-by-type?type=Slider")
+      await fetch(process.env.BASE_URL + "/api/news/news-by-type?type=slider")
     ).json();
     const featured = await (
-      await fetch(process.env.BASE_URL + "/api/news/news-by-type?type=Featured")
+      await fetch(process.env.BASE_URL + "/api/news/news-by-type?type=featured")
     ).json();
     const popular = await (
-      await fetch(process.env.BASE_URL + "/api/news/news-by-type?type=Popular")
+      await fetch(process.env.BASE_URL + "/api/news/news-by-type?type=popular")
     ).json();
     const latest = await (
       await fetch(process.env.BASE_URL + "/api/news/latest")
@@ -27,7 +27,7 @@ const page = async () => {
   const { slider, featured, popular, latest } = await getData();
   return (
     <PlainLayout>
-      <Hero sliders={slider.data} featured={featured.data} />
+      <Hero sliders={slider?.data} featured={featured?.data} />
       <div className="mt-5 container mx-auto">
         <h2 className="text-4xl mt-16">LATEST</h2>
         <hr />

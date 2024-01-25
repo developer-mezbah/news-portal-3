@@ -21,7 +21,7 @@ const Subscribe = ({bg}) => {
     } else {
       setSubmit(true);
       const options = { method: "POST", body: JSON.stringify(data) };
-      let res = await (await fetch("/api/subscriber", options)).json();
+      let res = await (await fetch("/api/subscribers", options)).json();
       setSubmit(false);
       setData({ email: "" });
 

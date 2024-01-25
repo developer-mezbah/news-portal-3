@@ -11,7 +11,7 @@ export async function GET(req, res){
             where: {userID: id},
             include: {
                 news_list: {select: { title: true }}
-            }
+            },
         })
         return NextResponse.json({status: "success", data: result})
     } catch (error) {

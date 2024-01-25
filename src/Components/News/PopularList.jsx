@@ -10,8 +10,8 @@ const PopularList = ({ popularLists }) => {
         <h2 className="py-2 px-3 text-xl text-white">POPULAR</h2>
       </div>
       <div className="popular-posts">
-        {popularLists &&
-          popularLists.data.map((item) => (
+        {
+          popularLists?.data.map((item) => (
             <div key={item.id} className="flex bg-black p-3 mt-2 rounded-md">
               <Image
                 className="w-2/5 min-w-2/5 rounded-sm object-cover h-[90px]"

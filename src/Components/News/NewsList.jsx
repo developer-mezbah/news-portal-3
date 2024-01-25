@@ -1,12 +1,9 @@
 
-// import gsap from "gsap";
-// import { ScrollTrigger } from "gsap/all";
 import Image from "next/image";
 import Link from "next/link";
 import { IoTimeOutline } from "react-icons/io5";
 
 const NewsList = ({ latest }) => {
-  // console.log(latest.data.length);
   function timeAgo(date) {
     const currentDate = new Date();
     const targetDate = new Date(date);
@@ -36,7 +33,6 @@ const NewsList = ({ latest }) => {
       return "just now";
     }
   }
-
   // Example usage:
   // const targetDate = '2022-01-01T12:30:00Z'; // Replace this with your date string
   
@@ -56,11 +52,11 @@ const NewsList = ({ latest }) => {
               <div className="p-5">
                 <Link href={`/details?id=${item.id}`}>
                   <h5  className="mb-2 text-2xl font-bold tracking-tight text-white">
-                    {item.title}
+                  {item.title.length > 45 ? (<span>{item.title.slice(0, 45)}...</span>): item.title}
                   </h5>
                 </Link>
                 <p className="mb-3 font-normal text-gray-400">
-                  {item.short_des}
+                  {item.short_des.length > 300 ? (<span>{item.short_des.slice(0, 300)}....</span>): item.short_des}
                 </p>
                 <div className="flex justify-between">
                   <Link

@@ -7,14 +7,12 @@ import DropDown from "./DropDown";
 import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
-const AppNavbar = ({ categories }) => {
+const AppNavbar = ({ categories, auth }) => {
   const [toogleAvatar, setToogleAvatar] = useState(false);
   const [serarchInput, setSearchInput] = useState("");
   const [searchList, setSearchList] = useState({});
-
   // DropDown hidden when click outside
   const popupRef = useRef(null);
-  const searchListRef = useRef(null);
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (popupRef.current && !popupRef.current.contains(e.target)) {
@@ -37,11 +35,15 @@ const AppNavbar = ({ categories }) => {
   const handleSearch = useDebouncedCallback((e) => {
     setSearchInput(e.target.value);
     console.log(serarchInput.length);
-    fetch(`/api/news/search?keyword=${e.target.value}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setSearchList(data.data);
-      });
+    if (e.target.value.length > 2) {
+      fetch(`/api/news/news-by-search?keyword=${e.target.value}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setSearchList(data.data);
+        });
+    } else {
+      setSearchList({});
+    }
   }, 300);
 
   return (
@@ -61,16 +63,35 @@ const AppNavbar = ({ categories }) => {
         <div className="navbar text-black lg:block hidden">
           <ul className="flex justify-center items-center text-md flex-wrap">
             <li className="group flex flex-col relative cursor-pointer overflow-hidden uppercase leading-4 px-2 py-3">
-              <Link href={"/"} className="ease-out duration-300 translate-y-3 group-hover:-translate-y-7">Home</Link>
-              <Link href={"/"} className="ease-out duration-300 translate-y-7 group-hover:-translate-y-1">Home</Link>
+              <Link
+                href={"/"}
+                className="ease-out duration-300 translate-y-3 group-hover:-translate-y-7"
+              >
+                Home
+              </Link>
+              <Link
+                href={"/"}
+                className="ease-out duration-300 translate-y-7 group-hover:-translate-y-1"
+              >
+                Home
+              </Link>
             </li>
             {categories &&
               categories.map((category) => (
-                <li key={category.id} className="group flex flex-col relative cursor-pointer overflow-hidden uppercase leading-4 px-2 py-3">
-                  <Link href={`/category?id=${category["id"]}`} className="ease-out duration-300 translate-y-3 group-hover:-translate-y-7">
+                <li
+                  key={category.id}
+                  className="group flex flex-col relative cursor-pointer overflow-hidden uppercase leading-4 px-2 py-3"
+                >
+                  <Link
+                    href={`/category?id=${category["id"]}`}
+                    className="ease-out duration-300 translate-y-3 group-hover:-translate-y-7"
+                  >
                     {"/ " + category.name}
                   </Link>
-                  <Link href={`/category?id=${category["id"]}`} className="ease-out duration-300 translate-y-7 group-hover:-translate-y-1">
+                  <Link
+                    href={`/category?id=${category["id"]}`}
+                    className="ease-out duration-300 translate-y-7 group-hover:-translate-y-1"
+                  >
                     {"/ " + category.name}
                   </Link>
                 </li>
@@ -118,14 +139,28 @@ const AppNavbar = ({ categories }) => {
               >
                 <ul className=" space-y-1">
                   <li>
-                    <Link href={"#"}>Profile</Link>
+                    {auth ? (
+                      <span>{auth}</span>
+                    ) : (
+                      <Link href={"#"}>Profile</Link>
+                    )}
                   </li>
                   <li>
                     <Link href={"/"}>Home</Link>
                   </li>
-                  <li className="lg:hidden block">
+                  {!auth && (
+                    <li>
+                      <Link href={"/user/login"}>Login</Link>
+                    </li>
+                  )}
+                  {!auth && (
+                    <li>
+                      <Link href={"/user/registration"}>Register</Link>
+                    </li>
+                  )}
+                  {auth && <li className="lg:hidden block">
                     <DropDown categories={categories} />
-                  </li>
+                  </li>}
                 </ul>
                 <button className="hover:bg-red-400 w-full p-1 border-2 border-red-500 mt-3 rounded-lg">
                   Sign Out
