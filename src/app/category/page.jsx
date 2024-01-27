@@ -18,6 +18,14 @@ async function getData(id) {
     console.log(error);
   }
 }
+export async function generateMetadata({ searchParams }){
+  const id = searchParams.id;
+  const { catName } = await getData(id);
+  return{
+    "title": `Category: ${catName.data.name}`,
+    "keywords": "next.js project, news portal nextjs project, full stack nextJS project, full stack news website, NEXT.JS PROJECT",
+  }
+}
 
 const category = async ({ searchParams }) => {
   const id = searchParams.id;

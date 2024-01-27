@@ -9,11 +9,18 @@ async function getData(keyword) {
       await fetch(`${process.env.BASE_URL}/api/news/news-by-search?keyword=${keyword}`)
     ).json();
     const popular = await (
-      await fetch(`${process.env.BASE_URL}/api/news/news-by-type?type=Popular`)
+      await fetch(`${process.env.BASE_URL}/api/news/news-by-type?type=popular`)
     ).json();
     return { searchData, popular };
   } catch (error) {
     console.log(error);
+  }
+}
+
+export async function generateMetadata({ searchParams }){
+  const keyword = searchParams.keyword;
+  return{
+    "title": `Search:-${keyword}`,
   }
 }
 

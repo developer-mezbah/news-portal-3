@@ -50,7 +50,7 @@ const NewsDetails = ({ postDetails }) => {
         )}
       </div>
       <div className="post-details">
-        {parse(long_des) || "Login description "}
+        {long_des && parse(long_des)}
         <div></div>
       </div>
     </>

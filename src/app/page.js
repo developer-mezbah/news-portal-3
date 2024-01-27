@@ -23,11 +23,14 @@ async function getData() {
   }
 }
 
+
+
+
 const page = async () => {
   const { slider, featured, popular, latest } = await getData();
   return (
     <PlainLayout>
-      <Hero sliders={slider?.data} featured={featured?.data} />
+      <Hero sliders={slider.data} featured={featured.data} />
       <div className="mt-5 container mx-auto">
         <h2 className="text-4xl mt-16">LATEST</h2>
         <hr />

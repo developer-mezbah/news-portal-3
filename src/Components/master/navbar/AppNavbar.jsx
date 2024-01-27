@@ -9,8 +9,8 @@ import { useDebouncedCallback } from "use-debounce";
 
 const AppNavbar = ({ categories, auth }) => {
   const [toogleAvatar, setToogleAvatar] = useState(false);
-  const [serarchInput, setSearchInput] = useState("");
-  const [searchList, setSearchList] = useState({});
+  const [searchInput, setSearchInput] = useState("")
+  const [searchList, setSearchList] = useState([]);
   // DropDown hidden when click outside
   const popupRef = useRef(null);
   useEffect(() => {
@@ -33,19 +33,24 @@ const AppNavbar = ({ categories, auth }) => {
 
   // Real time searchList change
   const handleSearch = useDebouncedCallback((e) => {
-    setSearchInput(e.target.value);
-    console.log(serarchInput.length);
+    setSearchInput(e.target.value)
     if (e.target.value.length > 2) {
-      fetch(`/api/news/news-by-search?keyword=${e.target.value}`)
+      fetch("/api/news/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(e.target.value), // Convert the data to JSON format
+      })
         .then((response) => response.json())
         .then((data) => {
           setSearchList(data.data);
-        });
+        })
+        .catch((err) => console.log("Something went wrong"));
     } else {
-      setSearchList({});
+      setSearchList([]);
     }
   }, 300);
-
   return (
     <div className="py-3">
       <div className="container mx-auto sm:flex justify-between items-center">
@@ -110,7 +115,7 @@ const AppNavbar = ({ categories, auth }) => {
             />
             <Link
               href={
-                serarchInput === "" ? "/" : `/search?keyword=${serarchInput}`
+                searchInput === "" ? "/" : `/search?keyword=${searchInput}`
               }
               className="bg-themeColor rounded-tr-md rounded-br-md h-full text-white p-[5px]"
             >
@@ -158,9 +163,11 @@ const AppNavbar = ({ categories, auth }) => {
                       <Link href={"/user/registration"}>Register</Link>
                     </li>
                   )}
-                  {auth && <li className="lg:hidden block">
-                    <DropDown categories={categories} />
-                  </li>}
+                  {auth && (
+                    <li className="lg:hidden block">
+                      <DropDown categories={categories} />
+                    </li>
+                  )}
                 </ul>
                 <button className="hover:bg-red-400 w-full p-1 border-2 border-red-500 mt-3 rounded-lg">
                   Sign Out

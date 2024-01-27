@@ -3,13 +3,20 @@ import parse from "html-react-parser";
 
 async function getData() {
   try {
-    return (
-      await (
-        await fetch(`${process.env.BASE_URL}/api/policy?type=privacy`)
-      ).json()
-    )["data"];
+    const data = await (
+      await fetch(`${process.env.BASE_URL}/api/policy?type=privacy`)
+    ).json()
+      return data.data
   } catch (error) {
     console.log(error);
+  }
+}
+export async function generateMetadata(){
+  const data = await getData();
+  return{
+    "title": data[0].type,
+    "description": data[0].long_des,
+    "keywords": "next.js project, news portal nextjs project, full stack nextJS project, full stack news website, NEXT.JS PROJECT",
   }
 }
 

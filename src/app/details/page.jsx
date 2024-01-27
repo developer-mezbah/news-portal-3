@@ -21,6 +21,22 @@ async function getData(id) {
   }
 }
 
+export async function generateMetadata({ searchParams }){
+  const id = searchParams.id;
+  const { postDetails } = await getData(id);
+  return{
+    "title": postDetails.data.title,
+    "description": postDetails.data.long_des,
+    "keywords": postDetails.data.keywords,
+    "openGraph": {
+      "title": postDetails.data.title,
+      "images": postDetails.data.img1,
+      "description": postDetails.data.short_des
+    }
+  }
+}
+
+
 const details = async ({ searchParams }) => {
   const id = searchParams.id;
   const { postDetails, popular, commentLists } = await getData(id);

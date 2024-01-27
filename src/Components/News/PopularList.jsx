@@ -11,7 +11,7 @@ const PopularList = ({ popularLists }) => {
       </div>
       <div className="popular-posts">
         {
-          popularLists?.data.map((item) => (
+          popularLists?.data?.map((item) => (
             <div key={item.id} className="flex bg-black p-3 mt-2 rounded-md">
               <Image
                 className="w-2/5 min-w-2/5 rounded-sm object-cover h-[90px]"

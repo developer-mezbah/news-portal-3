@@ -41,7 +41,7 @@ const NewsList = ({ latest }) => {
   return (
     <>
       {latest.data.length > 0 ?
-        latest.data.map((item, index) => {
+        latest.data.map((item) => {
           const postTime = timeAgo(item.createdAt)
           return(
           <div key={item.id} className="scroll-animation-container">
