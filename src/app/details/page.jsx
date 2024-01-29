@@ -1,4 +1,4 @@
-import { AuthCheck } from "@/Components/Auth/AuthCheck";
+
 import CommentLists from "@/Components/News/CommentLists";
 import NewsDetails from "@/Components/News/NewsDetails";
 import PopularList from "@/Components/News/PopularList";
@@ -40,14 +40,13 @@ export async function generateMetadata({ searchParams }){
 const details = async ({ searchParams }) => {
   const id = searchParams.id;
   const { postDetails, popular, commentLists } = await getData(id);
-  const {email, userID} = AuthCheck()
   return (
     <PlainLayout>
       <div className="mt-5 container mx-auto">
         <div className="flex gap-4">
           <div className="mx-auto w-3/4 my-5 flex flex-col gap-5">
             <NewsDetails postDetails={postDetails} />
-            <CommentLists postID={id} data={commentLists} auth={{email,userID}} />
+            <CommentLists postID={id} data={commentLists}/>
           </div>
           <div className="w-1/4 lg:block hidden mb-5">
             <PopularList popularLists={popular} />

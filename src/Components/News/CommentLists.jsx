@@ -1,31 +1,29 @@
 "use client";
-import Image from "next/image";
-import { IoSendSharp } from "react-icons/io5";
-import { CgProfile } from "react-icons/cg";
-import { useRouter } from "next/navigation";
 import { ErrorToast, SuccessToast } from "@/utils/FormHelper";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { CgProfile } from "react-icons/cg";
+import { IoSendSharp } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 
-const CommentLists = ({ postID, data, auth }) => {
+const CommentLists = ({ postID, data }) => {
   const router = useRouter();
   const [formData, setFormData] = useState("");
   const id = parseInt(postID);
   const handleSubmit = async () => {
-    if (auth.email) {
-      const options = {
-        method: "POST",
-        body: JSON.stringify({ postID: id, descriptions: formData }),
-      };
-      let res = await (await fetch("/api/comments/manage", options)).json();
-      if (res.status === "success") {
-        SuccessToast("Comment Added!")
-        setFormData("");
-        router.refresh();
-      }
+    const options = {
+      method: "POST",
+      body: JSON.stringify({ postID: id, descriptions: formData }),
+    };
+    let res = await (await fetch("/api/comments/manage", options)).json();
+    if (res.status === "success") {
+      SuccessToast("Comment Added!");
+      setFormData("");
+      router.refresh();
     } else {
       ErrorToast("Please Login, , , ");
-      return router.push("/user/login");
+      router.replace("/user/login");
     }
   };
 
@@ -33,7 +31,7 @@ const CommentLists = ({ postID, data, auth }) => {
     const options = { method: "DELETE", body: JSON.stringify({ id }) };
     let res = await (await fetch("/api/comments/manage", options)).json();
     if (res.status === "success") {
-      SuccessToast("Deleted Successfully!")
+      SuccessToast("Deleted Successfully!");
       router.refresh();
     }
   };
@@ -79,14 +77,14 @@ const CommentLists = ({ postID, data, auth }) => {
                     {item.users.firstName + " " + item.users.lastName}
                   </span>
                 </div>
-                {item.userID == auth.userID && (
+                {/* {item.userID == auth.userID && (
                   <div
                     onClick={() => handleDelete(item.id)}
                     className="text-3xl text-red-500 cursor-pointer hover:text-red-300"
                   >
                     <RiDeleteBin5Line />
                   </div>
-                )}
+                )} */}
               </div>
 
               <p>{item.descriptions}</p>

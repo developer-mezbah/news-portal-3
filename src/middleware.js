@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { VerifyToken } from "./utility/JWTTokenHelper";
+import { VerifyToken } from "./utils/JWTTokenHelper";
 export async function middleware(req, res) {
   try {
     let token = req.cookies.get("token");
