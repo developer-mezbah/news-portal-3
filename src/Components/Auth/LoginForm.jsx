@@ -29,7 +29,7 @@ const LoginForm = () => {
     let res = await (await fetch("/api/user/login", options)).json();
     if (res.status === 'success') {
         SuccessToast("you have logged IN!")
-        router.back()
+        window.location.href="/"
     }else{
         ErrorToast(res.status)
     }

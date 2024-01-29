@@ -1,15 +1,14 @@
-import { AuthCheck } from "@/Components/Auth/AuthCheck";
 import RegistrationForm from "@/Components/Auth/RegistrationForm";
 import PlainLayout from "@/Components/master/PlainLayout";
-import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 const Page = () => {
-  const {email} = AuthCheck()
-  if(email){
-    redirect("/")
-  }
+  const cookieStore = cookies();
+  const token = cookieStore.get("token");
+  let isLogin = false;
+  isLogin = typeof token !== "undefined";
   return (
     <PlainLayout>
-      <RegistrationForm/>
+      <RegistrationForm />
     </PlainLayout>
   );
 };

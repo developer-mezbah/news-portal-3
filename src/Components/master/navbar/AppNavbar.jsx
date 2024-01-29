@@ -1,15 +1,15 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { IoSearch } from "react-icons/io5";
+import { useDebouncedCallback } from "use-debounce";
 import "./AppNavbar.css";
 import DropDown from "./DropDown";
-import { useEffect, useRef, useState } from "react";
-import { useDebouncedCallback } from "use-debounce";
 
-const AppNavbar = ({ categories, auth }) => {
+const AppNavbar = ({ categories, isLogin }) => {
   const [toogleAvatar, setToogleAvatar] = useState(false);
-  const [searchInput, setSearchInput] = useState("")
+  const [searchInput, setSearchInput] = useState("");
   const [searchList, setSearchList] = useState([]);
   // DropDown hidden when click outside
   const popupRef = useRef(null);
@@ -33,7 +33,7 @@ const AppNavbar = ({ categories, auth }) => {
 
   // Real time searchList change
   const handleSearch = useDebouncedCallback((e) => {
-    setSearchInput(e.target.value)
+    setSearchInput(e.target.value);
     if (e.target.value.length > 2) {
       fetch("/api/news/search", {
         method: "POST",
@@ -114,9 +114,7 @@ const AppNavbar = ({ categories, auth }) => {
               onChange={(e) => handleSearch(e)}
             />
             <Link
-              href={
-                searchInput === "" ? "/" : `/search?keyword=${searchInput}`
-              }
+              href={searchInput === "" ? "/" : `/search?keyword=${searchInput}`}
               className="bg-themeColor rounded-tr-md rounded-br-md h-full text-white p-[5px]"
             >
               <IoSearch style={{ fontSize: "28px" }} />
@@ -144,8 +142,8 @@ const AppNavbar = ({ categories, auth }) => {
               >
                 <ul className=" space-y-1">
                   <li>
-                    {auth ? (
-                      <span>{auth}</span>
+                    {isLogin ? (
+                      <span>{isLogin}</span>
                     ) : (
                       <Link href={"#"}>Profile</Link>
                     )}
@@ -153,25 +151,25 @@ const AppNavbar = ({ categories, auth }) => {
                   <li>
                     <Link href={"/"}>Home</Link>
                   </li>
-                  {!auth && (
+                  {!isLogin && (
                     <li>
                       <Link href={"/user/login"}>Login</Link>
                     </li>
                   )}
-                  {!auth && (
+                  {!isLogin && (
                     <li>
                       <Link href={"/user/registration"}>Register</Link>
                     </li>
                   )}
-                  {auth && (
+                  {isLogin && (
                     <li className="lg:hidden block">
                       <DropDown categories={categories} />
                     </li>
                   )}
                 </ul>
-                <button className="hover:bg-red-400 w-full p-1 border-2 border-red-500 mt-3 rounded-lg">
-                  Sign Out
-                </button>
+                <a href="/api/user/login">
+                  <button className="hover:bg-red-400 w-full p-1 border-2 border-red-500 mt-3 rounded-lg">Log out</button>
+                </a>
               </div>
             )}
           </div>
